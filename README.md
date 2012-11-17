@@ -20,9 +20,14 @@ THE SOFTWARE.
 
 
 libftc-util
+===========
 
 INSTALLATION INSTRUCTIONS
-=========================
+-------------------------
 Extract the downloaded file, and place the resulting directory in the directory where your code will be contained. Then, add
-#include "libftc-util/libftc-util.c"
+
+```
+  #include "libftc-util/libftc-util.c"
+```
+
 to the top of your program.
