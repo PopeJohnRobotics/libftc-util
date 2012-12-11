@@ -60,7 +60,8 @@ int libftc_initAccel(){
     PlayTone(7000,10);
     for (int i = 0; i < 10; ++i){
       int sens_Val;
-      HTACreadX(accelPort, sens_Val);
+      int tmp;
+      HTACreadAllAxes(accelPort, sens_Val,tmp,tmp);
       accelOff += sens_Val;
       sens_Val < min ? min = sens_Val : (sens_Val > max ? max = sens_Val : 1);// Set the max and min values.
       wait10Msec(10);
@@ -174,13 +175,13 @@ float libftc_gyroForwardAndStop(int power,int time)
       case MOVING:
         int rightPower = power + (int)gyroVal*8;
         int leftPower = power - (int)gyroVal*8;
-        if (max(rightPower,leftPower) > 100){
-          rightPower -= max(rightPower,leftPower)-100;
-          leftPower  -= max(rightPower,leftPower)-100;
+        if (max2(rightPower,leftPower) > 100){
+          rightPower -= max2(rightPower,leftPower)-100;
+          leftPower  -= max2(rightPower,leftPower)-100;
         }
-        if (min(rightPower,leftPower) < 100){
-          rightPower -= min(rightPower,leftPower)+100;
-          leftPower  -= min(rightPower,leftPower)+100;
+        if (min2(rightPower,leftPower) < 100){
+          rightPower -= min2(rightPower,leftPower)+100;
+          leftPower  -= min2(rightPower,leftPower)+100;
         }
         rightSide(rightPower);
         leftSide(leftPower);
@@ -242,9 +243,10 @@ void libftc_gyroForwardAndStopSmooth(int power,int time)
 */
 void libftc_checkBattery(){
   PlayTone(15000 - externalBattery, 200);
+  long basePitch = (getUID()%300)*10;
   while(externalBattery < 13000){
-    PlayTone(3000, 40);
-    PlayTone(8000, 40);
+    PlayTone(basePitch, 40);
+    PlayTone(8000-basePitch, 40);
   }
   ClearSounds();
 }
